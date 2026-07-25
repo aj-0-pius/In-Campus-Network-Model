@@ -1,109 +1,61 @@
-🛡️ Zero-Trust Enterprise Campus Network Architecture
+# 🛡️ Zero-Trust Enterprise Campus Network
 
-📌 About The Project
+A highly secure, multi-departmental campus network infrastructure designed for Rajshahi Polytechnic Institute using Cisco Packet Tracer.
 
-This project is a massive, highly detailed Enterprise Campus Network Simulation designed for Rajshahi Polytechnic Institute. Scaling across 9 distinct academic and administrative departments, the architecture abandons traditional flat networks in favor of a modern Zero-Trust Micro-segmentation model.
+## 🚀 Features
 
-Due to the extreme detail, physical layout mapping, and sheer volume of configured devices, the simulation file exceeds GitHub's standard upload limits (29+ MB).
+Zero-Trust Micro-segmentation: Strict Layer 3 Access Control Lists (ACLs) isolating 9 distinct departments.
 
-🚀 Download the Cisco Packet Tracer Simulation (.pkt) Here
+The "Admin Mesh": God-mode access for department admins while strictly denying lateral movement for students and faculty.
 
-🏗️ Architectural Overview
+Enterprise Edge Security: Centralized NAT (Network Address Translation) and firewall routing.
 
-The network is built using the industry-standard Cisco Hierarchical Model (Core, Distribution, Access) to ensure high availability, scalability, and deterministic traffic flow.
+Automated IP Management: Localized DHCP scopes routed via ip helper-address to a secure internal server.
 
-Key Features & Technologies Implemented
+Layer 2 Hardening: Campus-wide deployment of Port Security (Sticky MAC) and Spanning-Tree BPDU Guard.
 
-Zero-Trust Security Perimeter: Heavy utilization of Extended Access Control Lists (ACLs) at the distribution layer to completely isolate departmental traffic.
+# 📥 Download & Installation
 
-The "Admin Mesh": A highly restricted, cross-campus logical mesh allowing designated IT Administrators global access while implicitly denying all lateral student/faculty traffic.
+Due to the extreme detail and sheer volume of configured devices, the simulation file is 29+ MB and exceeds GitHub's standard upload limits.
 
-Hierarchical Subnetting: A meticulously calculated IPv4 scheme supporting over 50+ VLANs campus-wide without IP overlap.
+💻 Usage
 
-Centralized Edge Services: Single-point NAT (Network Address Translation) and Edge Firewall routing for secure internet access.
+To explore and test the security policies of this network:
 
-Automated IP Management: Departmental servers handling localized DHCP scopes via ip helper-address forwarding.
+Open the downloaded file in Cisco Packet Tracer (Version 8.0 or higher recommended).
 
-Layer 2 Hardening: Campus-wide deployment of Port Security (Sticky MAC) and Spanning-Tree BPDU Guard to mitigate rogue access and broadcast storms.
+Test DHCP: Open any Student PC (e.g., in the EMT or CST department), navigate to IP Configuration, and verify it successfully pulls an IP from the local department server.
 
-Enterprise AAA & Telemetry: TACACS+ authentication for infrastructure hardware, backed by a dual-tier Syslog and NTP architecture.
+Test Security (Ping): Open the Command Prompt on a Student PC and attempt to ping a Teacher PC.
 
-🔒 Departmental Security Policy (Zero-Trust)
+# The ICMP request will be actively rejected by the Distribution Switch ACL.
+Reply from 172.16.x.1: Destination host unreachable.
 
-Each of the 9 departments (e.g., CST, EMT, Civil, Mechanical) is an independent, self-sufficient security zone.
 
-Logical Entity
+Examine Configurations: Enter the CLI of any Distribution switch (3560) and run the following command to view the complex security posture:
 
-VLAN (EMT Example)
+Switch# show access-lists
 
-Subnet
 
-Security Clearance
+# 🏗️ Departmental Security Policy
 
-Local Server
+Each department is configured as an independent security zone. (Example: EMT Department)
 
-VLAN 30
+| Entity | VLAN | Subnet | Security Clearance |
+| :--- | :--- | :--- | :--- |
+| **Local Server** | VLAN 30 | `172.16.30.0/24` | Hosts DHCP/AAA. Isolated globally. |
+| **Admin PC** | VLAN 31 | `172.16.31.0/24` | Full local access, global email, internet. |
+| **Teacher PCs** | VLAN 32 | `172.16.32.0/24` | Access to Server & Labs. Blocked globally. |
+| **Student Labs** | VLAN 33/34 | `172.16.33.0/24` | Internet only. Blocked from lateral movement. |
 
-172.16.30.0/24
+# 🤝 Contributing
 
-Hosts DHCP/AAA. Isolated from outside departments.
+Contributions, issues, and feature requests are welcome!
+Feel free to check the issues page.
 
-Admin PC
+## 📄 License
 
-VLAN 31
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-172.16.31.0/24
-
-God Mode: Full local access, global email, internet.
-
-Teacher PCs
-
-VLAN 32
-
-172.16.32.0/24
-
-Access to Server & Labs. Can email Admin. Blocked globally.
-
-Student Lab 1
-
-VLAN 33
-
-172.16.33.0/24
-
-DHCP enabled. Internet only. Blocked from lateral movement.
-
-Student Lab 2
-
-VLAN 34
-
-172.16.34.0/24
-
-DHCP enabled. Internet only. Blocked from lateral movement.
-
-Traffic Flow Logic
-
-To achieve true isolation, traffic routing is handled exclusively by Multilayer Distribution Switches (Cisco 3560) using dot1q trunking. All Inter-VLAN traffic is filtered through strict inbound ACLs before being routed. For instance, a Student PC in Lab 1 can reach 8.8.8.8 (Internet) but is cryptographically blocked from pinging the Teacher PC located just one room over.
-
-🛠️ How to Explore the Simulation
-
-If you download the .pkt file from the Google Drive link above, follow these steps to verify the network integrity:
-
-Open in Cisco Packet Tracer (Version 8.0 or higher recommended).
-
-Test DHCP: Open any Student PC in any department, switch IP Configuration to DHCP, and watch it successfully pull an IP from the local department server.
-
-Test Isolation (Ping): Attempt to ping a Teacher PC from a Student PC. The ICMP request will be actively rejected by the Distribution Switch ACL.
-
-Test Internet (NAT): Trace a packet from a Student PC to the external ISP Cloud to observe the Edge Router performing NAT overload.
-
-Examine Configurations: Enter the CLI of any Distribution switch and run show access-lists or show running-config to view the complex security posture.
-
-👨‍💻 Author
-
-Minhajul Abadin Pius
-
-Role: Network Architect / Security Engineer
-
-Education: Diploma in Engineering (CST), 6th Semester, Rajshahi Polytechnic Institute
-
-Contact/Links: [Insert your LinkedIn profile link here]
+Prepared By: Minhajul Abadin Pius
+(Diploma in Engineering, CST 6th Semester - Rajshahi Polytechnic Institute)
